@@ -1,0 +1,63 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/helmpack/pull-sizer
+  tag: latest
+  pullPolicy: IfNotPresent
+
+secrets:
+
+  # The name of an existing secret to use instead of creating one. It must
+  # conform to the structure of the included secret. The advantage is that this
+  # secret can be managed out of band and without any values ended up in a
+  # configMap used by Tiller. If this value is set to a non-empty value the
+  # other elements on secret are ignored.
+  # existingSecret:
+
+  # The shared secret is the secret for the webhook in GitHub
+  # that the reciever needs to know as well
+  sharedSecret:
+
+  # The name of the repo in the format foo/bar
+  repoName:
+
+  # The GitHub token for the user/bot that will make the API calls
+  ghToken:
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
