@@ -1,0 +1,4 @@
+# Chart directories separated by a space
+CHART_DIRS=(
+    chart
+)
