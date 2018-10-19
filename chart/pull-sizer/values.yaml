@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: quay.io/helmpack/pull-sizer
-  tag: latest
+  tag: 0.1.0
   pullPolicy: IfNotPresent
 
 secrets:
