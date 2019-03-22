@@ -269,7 +269,35 @@ func updateLabel(owner, repo string, number, changes int) (string, error) {
 
 	ctx, client := ghClient()
 
-	// Remove old size labels
+	// Figure out the size label it should be
+	var clabel string
+
+	for k, v := range defaultSizes {
+		c64 := int64(changes)
+		if c64 >= v.Min && c64 <= v.Max {
+			clabel = k
+		}
+	}
+
+	// Get the current label
+	opts := &github.ListOptions{
+		PerPage: 100,
+	}
+	elabels, resp, err := client.Issues.ListLabelsByIssue(ctx, owner, repo, number, opts)
+	if err != nil {
+		return clabel, err
+	} else if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return clabel, fmt.Errorf("API Respone had code %q, unable to process labels", resp.StatusCode)
+	}
+
+	// If current label is right then exit
+	for _, v := range elabels {
+		if *v.Name == clabel {
+			return clabel, nil
+		}
+	}
+
+	// Remove old label
 	for k := range defaultSizes {
 		res, err := client.Issues.RemoveLabelForIssue(ctx, owner, repo, number, k)
 		if res.StatusCode == 404 {
@@ -279,25 +307,17 @@ func updateLabel(owner, repo string, number, changes int) (string, error) {
 			return "", err
 		}
 	}
+	
+	// Add new label
+	// For this to work the bot account needs access to create labels
+	labels := []string{clabel}
+	_, _, err = client.Issues.AddLabelsToIssue(ctx, owner, repo, number, labels)
 
-	// Add label
-	for k, v := range defaultSizes {
-		c64 := int64(changes)
-		if c64 >= v.Min && c64 <= v.Max {
-			labels := []string{k}
+	// TODO: Handle case where Bot does not have access to create labels.
 
-			// For this to work the bot account needs access to create labels
-			_, _, err := client.Issues.AddLabelsToIssue(ctx, owner, repo, number, labels)
-
-			// TODO: Handle case where Bot does not have access to create labels.
-
-			if err != nil {
-				return k, err
-			}
-
-			return k, nil
-		}
+	if err != nil {
+		return clabel, err
 	}
 
-	return "", nil
+	return clabel, nil
 }
