@@ -68,11 +68,49 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:f8b491a7c25030a895a0e579742d07136e6958e77ef2d46e769db8eec4e58fcd"
+  name = "golang.org/x/net"
+  packages = [
+    "context",
+    "context/ctxhttp",
+  ]
+  pruneopts = "UT"
+  revision = "addf6b3196f61cd44ce5a76657913698c73479d0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:9927d6aceb89d188e21485f42a7a254e67e6fdcf4260aba375fe18e3c300dfb4"
+  name = "golang.org/x/oauth2"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "c85d3e98c914e3a33234ad863dcbff5dbc425bb8"
+
+[[projects]]
+  branch = "master"
   digest = "1:0a40b0bdd57a93e741d8557465be3a2edeec408e9b6399586ad65bbe8e355796"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
   revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
+
+[[projects]]
+  digest = "1:6eb6e3b6d9fffb62958cf7f7d88dbbe1dd6839436b0802e194c590667a40412a"
+  name = "google.golang.org/appengine"
+  packages = [
+    "internal",
+    "internal/base",
+    "internal/datastore",
+    "internal/log",
+    "internal/remote_api",
+    "internal/urlfetch",
+    "urlfetch",
+  ]
+  pruneopts = "UT"
+  revision = "54a98f90d1c46b7731eb8fb305d2a321c30ef610"
+  version = "v1.5.0"
 
 [[projects]]
   digest = "1:2655728699af00d823b0a68bd7169fd241a30c04252f456b34421908701b9c3f"
@@ -102,6 +140,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/google/go-github/github",
+    "golang.org/x/oauth2",
     "gopkg.in/gin-gonic/gin.v1",
   ]
   solver-name = "gps-cdcl"
