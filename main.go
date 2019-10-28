@@ -173,10 +173,10 @@ func processHook(c *gin.Context) {
 	repoSplit := strings.Split(*payload.Repo.FullName, "/")
 	checkSplit := strings.Split(repoOrOrgName, "/")
 
-	if repoSplit[0] != checkSplit[0] {
+	if strings.ToLower(repoSplit[0]) != strings.ToLower(checkSplit[0]) {
 		c.JSON(http.StatusForbidden, gin.H{"message": "Not configured for this repository"})
 		return
-	} else if len(checkSplit) > 1 && repoSplit[1] != checkSplit[1] {
+	} else if len(checkSplit) > 1 && strings.ToLower(repoSplit[1]) != strings.ToLower(checkSplit[1]) {
 		c.JSON(http.StatusForbidden, gin.H{"message": "Not configured for this repository"})
 		return
 	}
